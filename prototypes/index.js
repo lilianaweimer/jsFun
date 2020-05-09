@@ -1,3 +1,5 @@
+/* eslint-disable */
+
 const { kitties } = require('./datasets/kitties');
 const { clubs } = require('./datasets/clubs');
 const { mods } = require('./datasets/mods');
@@ -27,21 +29,30 @@ const kittyPrompts = {
 
     // Return an array of just the names of kitties who are orange e.g.
     // ['Tiger', 'Snickers']
-    const result = 'REPLACE WITH YOUR RESULT HERE';
+    const result = kitties.filter(kitty => kitty.color === 'orange')
+      .map(orangeKitty => orangeKitty.name);
     return result;
 
     // Annotation:
     // Write your annotation here as a comment
+    /*
+    filter for the orange kitties :)
+    then map their names! :)
+    */
   },
 
   sortByAge() {
     // Sort the kitties by their age
 
-    const result = 'REPLACE WITH YOUR RESULT HERE';
+    const result = ;
     return result;
 
     // Annotation:
     // Write your annotation here as a comment
+    /*
+    sort by i am assuming means put in order by?
+    yes the test show in reverse order of age
+    */
   },
 
   growUp() {
