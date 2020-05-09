@@ -43,15 +43,19 @@ const kittyPrompts = {
 
   sortByAge() {
     // Sort the kitties by their age
-
-    const result = ;
+    const result = kitties.sort(function(a, b) {
+      return b.age - a.age;
+    });
     return result;
+
+
 
     // Annotation:
     // Write your annotation here as a comment
     /*
     sort by i am assuming means put in order by?
-    yes the test show in reverse order of age
+    yes the test shows in reverse order of age
+    ok. so. try using the .sort() prototype with the age in there
     */
   },
 
