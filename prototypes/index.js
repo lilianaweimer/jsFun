@@ -73,10 +73,23 @@ const kittyPrompts = {
     // },
     // ...etc]
 
-    const result = 'REPLACE WITH YOUR RESULT HERE';
+    const result = kitties.sort((a, b) => b.age - a.age)
+    .map(kitty => {
+      kitty.age += 2;
+      return kitty;
+    });
     return result;
-  }
+  },
 };
+
+/*
+alright so for this one i will iterate through the ages
+and increase them all by 2
+that sounds like a foreach or a map to me
+i realized they needed to be sorted also,
+so i changed out the foreach for a map because it does the same thing
+kind of
+*/
 
 
 
