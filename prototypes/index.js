@@ -118,11 +118,32 @@ const clubPrompts = {
     //   ...etc
     // }
 
-    const result = 'REPLACE WITH YOUR RESULT HERE';
+    const result = clubs.reduce((acc, club) => {
+     club.members.forEach(member => {
+      if (!acc[member]) {
+        acc[member] = [];
+      }
+      acc[member].push(club.club);
+     });
+      return acc;
+    }, {});
     return result;
 
     // Annotation:
     // Write your annotation here as a comment
+    /*
+    alright this looks like a situation where i might need map
+    i am creating a NEW object so map to make each array?
+    and to create the object... a literal?
+
+    so for each name, if the name appears in the members array
+    push the club name into the array that is the key for the name?
+
+    oof
+    this one is confusing
+
+    ill come back to it
+    */
   }
 };
 
@@ -154,7 +175,13 @@ const modPrompts = {
     //   { mod: 4, studentsPerInstructor: 8 }
     // ]
 
-    const result = 'REPLACE WITH YOUR RESULT HERE';
+    const result = mods.map(mod => {
+
+      let newObj = {};
+      newObj.mod = mod.mod;
+      newObj.studentsPerInstructor = (mod.students / mod.instructors);
+      return newObj;
+    });
     return result;
 
     // Annotation:
@@ -189,11 +216,19 @@ const cakePrompts = {
     //    ..etc
     // ]
 
-    const result = 'REPLACE WITH YOUR RESULT HERE';
+    const result = cakes.map(cake => {
+      return {
+        flavor: cake.cakeFlavor,
+        inStock: cake.inStock,
+      } 
+    });
     return result;
 
     // Annotation:
     // Write your annotation here as a comment
+    /*
+    map
+    */
   },
 
   onlyInStock() {
@@ -217,22 +252,33 @@ const cakePrompts = {
     // ..etc
     // ]
 
-    const result = 'REPLACE WITH YOUR RESULT HERE';
+    const result = cakes.filter(cake => cake.inStock !== 0 );
     return result;
 
     // Annotation:
     // Write your annotation here as a comment
+    /*
+    filter for instock 
+    return those
+    */
   },
 
   totalInventory() {
     // Return the total amount of cakes in stock e.g.
     // 59
 
-    const result = 'REPLACE WITH YOUR RESULT HERE';
+    const result = cakes.reduce((inStockCakes, cake) => {
+      return inStockCakes += cake.inStock;
+    }, 0);
     return result;
 
     // Annotation:
     // Write your annotation here as a comment
+    /*
+    reduce 
+    get all instock
+    add them up
+    */
   },
 
   allToppings() {
@@ -240,11 +286,22 @@ const cakePrompts = {
     // every cake in the dataset e.g.
     // ['dutch process cocoa', 'toasted sugar', 'smoked sea salt', 'berries', ..etc]
 
-    const result = 'REPLACE WITH YOUR RESULT HERE';
+    const result = cakes.reduce((allToppings, cake) => {
+      cake.toppings.forEach(topping => {
+        if (!allToppings.includes(topping)) {
+          allToppings.push(topping);
+        }
+      });
+      return allToppings;
+    }, []);
     return result;
 
     // Annotation:
     // Write your annotation here as a comment
+    /*
+    reduce to one array of toppings
+    use ! to stop duplicates
+    */
   },
 
   groceryList() {
@@ -258,11 +315,28 @@ const cakePrompts = {
     //    ...etc
     // }
 
-    const result = 'REPLACE WITH YOUR RESULT HERE';
+    const result = cakes.reduce((toppingsNeeded, cake) => {
+      cake.toppings.forEach(topping => {
+        if (!toppingsNeeded[topping]) {
+          toppingsNeeded[topping] = 1;
+        } else {
+         toppingsNeeded[topping]++;
+        }
+      })
+      return toppingsNeeded;
+    }, {});
     return result;
 
     // Annotation:
     // Write your annotation here as a comment
+    /*
+    iterate through each toppings array
+    count how many times each appears TOTAL
+    return:
+    topping: number of appearances
+
+    in one object, use reduce
+    */
   }
 };
 
@@ -293,11 +367,14 @@ const classPrompts = {
     //   { roomLetter: 'G', program: 'FE', capacity: 29 }
     // ]
 
-    const result = 'REPLACE WITH YOUR RESULT HERE';
+    const result = classrooms.filter(classroom => classroom.program === 'FE');
     return result;
 
     // Annotation:
     // Write your annotation here as a comment
+    /*
+    filter for classrooms with program: 'FE'
+    */
   },
 
   totalCapacities() {
@@ -308,21 +385,56 @@ const classPrompts = {
     //   beCapacity: 96
     // }
 
-    const result = 'REPLACE WITH YOUR RESULT HERE';
+    const result = classrooms
+    .filter(classroom => {
+      return (classroom.program === 'BE') && (classroom.program === 'FE');
+      })
+    
+    
+    // .reduce((capacity, classroom) => {
+    
+    
+      // switch (classroom.program) {
+      //   case ('FE'):
+      //     capacity.feCapacity = (capacity.feCapacity === undefined) ? 0 : capacity.feCapacity += classroom.capacity;
+      //     break;
+      //   case ('BE'):
+      //     capacity.beCapacity = (capacity.beCapacity === undefined) ? 0 : capacity.beCapacity += classroom.capacity;
+      //     break;
+      // }
+      // if (classroom.program === 'FE') {
+      //   capacity.feCapacity += classroom.capacity;
+      // } else if (classroom.program === 'BE') {
+      //   capacity.beCapacity += classroom.capacity;
+      // }
+    //   return capacity;
+    // }, {});
     return result;
 
     // Annotation:
     // Write your annotation here as a comment
+    /*
+    reduce to an object
+    that object should have keys of feCapacity and beCapacity
+    their values should += the capacity in the objects where the program matches
+    could use a filter?
+    */
   },
 
   sortByCapacity() {
     // Return the array of classrooms sorted by their capacity (least capacity to greatest)
 
-    const result = 'REPLACE WITH YOUR RESULT HERE';
+    const result = classrooms.sort((a, b) => {
+      return a.capacity - b.capacity;
+    });
     return result;
 
     // Annotation:
     // Write your annotation here as a comment
+    /*
+    sort by classrooms.capacity, so hmm
+
+    */
   }
 };
 
@@ -345,11 +457,21 @@ const bookPrompts = {
     //   'Catch-22', 'Treasure Island']
 
 
-    const result = 'REPLACE WITH YOUR RESULT HERE';
+    const result = books .reduce((titles, book) => {
+      if (book.genre !== 'Horror' && book.genre !== 'True Crime') {
+        titles.push(book.title);
+      }
+      return titles;
+    }, [])
+    
     return result;
 
     // Annotation:
     // Write your annotation here as a comment
+    /*
+    filter for NOT horror or true crime
+    then return only the titles
+    */
 
   },
   getNewBooks() {
@@ -360,11 +482,20 @@ const bookPrompts = {
     //  { title: 'Life of Pi', year: 2001 },
     //  { title: 'The Curious Incident of the Dog in the Night-Time', year: 2003 }]
 
-    const result = 'REPLACE WITH YOUR RESULT HERE';
+    const result = books.filter(book => {
+      let year = book.published.toString();
+      if (year.includes('199') || year.includes('200')) {
+        return book;
+      }
+    });
     return result;
 
     // Annotation:
     // Write your annotation here as a comment
+    /*
+    filter for '199' or '200' in the books.published strings
+    return those items
+    */
   }
 
 };

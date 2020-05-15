@@ -34,6 +34,8 @@ const scope = {
 
     // Annotation:
     // Write your annotation here as a comment
+    /*
+    */
   },
 
   exerciseB() {
