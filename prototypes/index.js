@@ -487,6 +487,12 @@ const bookPrompts = {
       if (year.includes('199') || year.includes('200')) {
         return book;
       }
+    })
+    .map(book => {
+      return {
+        title: book.title,
+        year: book.published
+      }
     });
     return result;
 
@@ -514,11 +520,20 @@ const weatherPrompts = {
     // return an array of all the average temperatures. Eg:
     // [ 40, 40, 44.5, 43.5, 57, 35, 65.5, 62, 14, 46.5 ]
 
-    const result = 'REPLACE WITH YOUR RESULT HERE';
+    const result = weather.reduce((averages, location) => {
+      averages.push((location.temperature.high + location.temperature.low) / 2);
+      return averages;
+    }, []);
     return result;
 
     // Annotation:
     // Write your annotation here as a comment
+    /*
+    reduce to an array, inside of which
+    for each temperature object,
+    reduce to one value
+    YEEHAW
+    */
   },
 
   findSunnySpots() {
@@ -528,11 +543,20 @@ const weatherPrompts = {
     // 'New Orleans, Louisiana is sunny.',
     // 'Raleigh, North Carolina is mostly sunny.' ]
 
-    const result = 'REPLACE WITH YOUR RESULT HERE';
+    const result = weather.reduce((sunnySpots, location) => {
+      if (location.type === 'sunny' || location.type === 'mostly sunny') {
+        sunnySpots.push(`${location.location} is ${location.type}.`);
+      }
+      return sunnySpots;
+    }, []);
     return result;
 
     // Annotation:
     // Write your annotation here as a comment
+    /*
+    filter for sunny and mostly sunny
+    return "location" "is" "weather" 
+    */
   },
 
   findHighestHumidity() {
@@ -544,11 +568,19 @@ const weatherPrompts = {
     //   temperature: { high: 49, low: 38 }
     // }
 
-    const result = 'REPLACE WITH YOUR RESULT HERE';
-    return result;
+    const result = weather.sort((a, b) => {
+      return a.humidity - b.humidity;
+    });
+    return result[9];
 
     // Annotation:
     // Write your annotation here as a comment
+    /*
+    location with highest humidity means
+    iterating through, maybe sorting, and then
+    returning the highest number
+    i think sort is smart
+    */
 
   }
 };
@@ -571,11 +603,34 @@ const nationalParksPrompts = {
     //   parksVisited: ["Rocky Mountain", "Acadia", "Zion"]
     //}
 
-    const result = 'REPLACE WITH YOUR RESULT HERE';
+    const result = nationalParks.reduce((visitList, currentPark) => {
+      visitList = {
+        parksToVisit: [],
+        parksVisited: []
+      }
+      nationalParks.forEach(park => { 
+        if (park.visited === true) {
+          visitList.parksVisited.push(park.name);
+        } else {
+          visitList.parksToVisit.push(park.name);
+        }
+      });
+
+      return visitList;
+
+    }, {});
     return result;
+
+    //why does this work if the currentPark value does nothing?
 
     // Annotation:
     // Write your annotation here as a comment
+    /*
+    go through and put the parks into arrays
+    if visited: true, put it into the visited array
+    if it's false, put it into the need to visit array
+    return both arrays in one object, so ... reduce?
+    */
   },
 
   getParkInEachState() {
@@ -588,11 +643,19 @@ const nationalParksPrompts = {
     // { Florida: 'Everglades' } ]
 
 
-    const result = 'REPLACE WITH YOUR RESULT HERE';
+    const result = nationalParks.map(park => {
+      let parksByState = {};
+      parksByState[park.location] = park.name;
+      return parksByState;
+    });
     return result;
 
     // Annotation:
     // Write your annotation here as a comment
+    /*
+    reduce may work here but i think i am going to try map
+    so i will need to return {park.state: park.name}
+    */
   },
 
   getParkActivities() {
@@ -611,11 +674,21 @@ const nationalParksPrompts = {
     //   'backpacking',
     //   'rock climbing' ]
 
-    const result = 'REPLACE WITH YOUR RESULT HERE';
+    const result = nationalParks.reduce((allActivities, park) => {
+      park.activities.forEach(activity => {
+        if (!allActivities.includes(activity)) {
+          allActivities.push(activity);
+        }
+      });
+      return allActivities;
+    }, []);
     return result;
 
     // Annotation:
     // Write your annotation here as a comment
+    /*
+
+    */
   }
 };
 
